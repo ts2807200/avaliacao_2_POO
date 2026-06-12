@@ -1,9 +1,10 @@
+//Professor Tiago, enchi de comentários pra deixar tudo bem explicado 
 #include <iostream>
 #include <string>
 
 using namespace std;
 
-// ===================== EXCEÇÃO SIMPLES =====================
+// Classe que retorna erro simples
 
 class ErroSistema {
 public:
@@ -14,7 +15,7 @@ public:
     }
 };
 
-// ===================== PESSOA =====================
+// Armazena nome, é herdada por Aluno e Bibilotecaria
 
 class Pessoa {
 private:
@@ -30,8 +31,7 @@ public:
     }
 };
 
-// ===================== ALUNO =====================
-
+// Armazena a matricula, possui o construtor que usa Pessoa.nome e matricula como "parâmetros" e getMatricula pra retornar num da matricula
 class Aluno : public Pessoa {
 private:
     int matricula;
@@ -46,7 +46,7 @@ public:
     }
 };
 
-// ===================== BIBLIOTECARIA =====================
+// Armazena a registro, possui o construtor que usa Pessoa.nome e registro como "parâmetros" e getRegistro pra retornar o num do registro
 
 class Bibliotecaria : public Pessoa {
 private:
@@ -62,7 +62,7 @@ public:
     }
 };
 
-// ===================== LIVRO =====================
+// Armazena nome, autor, codigo e ano, possui construtor que usa nome, autor, codigo e ano como "parâmetro" e as funções getNome, getCodigo e getAutor
 
 class Livro {
 private:
@@ -82,25 +82,25 @@ public:
     string getCodigo() { return codigo; }
 };
 
-// ===================== SISTEMA =====================
+// Armazena as structs das listas encadeadas que guardam os alunos, livros e emprestimos alem de todas as funções logicas do sistema
 
 class Sistema {
 private:
 
-    // -------- ALUNOS --------
-    struct NoAluno {
-        Aluno* aluno;
+    // Struct da lista encadeada aluno
+    struct NoAluno { //Armazena um ponteiro pra uma instância da classe aluno e um ponteiro para o endereço da próxima struct NoAluno
+        Aluno* aluno; 
         NoAluno* prox;
     };
 
     // -------- LIVROS --------
-    struct NoLivro {
+    struct NoLivro { //Armazena um ponteiro pra uma instância da classe livro e um ponteiro para o endereço da próxima struct NoLivro
         Livro* livro;
         NoLivro* prox;
     };
 
     // -------- EMPRESTIMOS --------
-    struct NoEmprestimo {
+    struct NoEmprestimo {  //Armazena o número da matricula do aluno, o código do livro e um ponteiro para o endereço da próxima struct NoEmprestimo
         int matricula;
         string codigoLivro;
         NoEmprestimo* prox;
@@ -111,13 +111,13 @@ private:
     NoEmprestimo* emprestimos;
 
 public:
-    Sistema() {
-        alunos = nullptr;
+    Sistema() {  //Inicia os valores como null para serem o head  inicial das listas encadeadas, depois não são muito usados já que os valores são inseridos no começo da lista, pois fica mais bonito na apresentação
+        alunos = nullptr; 
         livros = nullptr;
         emprestimos = nullptr;
     }
 
-    // ===================== VALIDACOES =====================
+    // Validações pra fazer a inserção nas listas
 
     bool alunoExiste(int mat) {
         NoAluno* a = alunos;
@@ -141,16 +141,16 @@ public:
         return false;
     }
 
-    // ===================== CADASTROS =====================
+    // funções para inserir valores no inicio das listas ordenadas
 
     void cadastrarAluno() {
         string nome;
         int mat;
 
-        cin.ignore();
+        cin.ignore();  //função pra evitar que o cin.getline ache que enter é caracter
 
-        cout << "Nome: ";
-        getline(cin, nome);
+        cout << "Nome: "; 
+        getline(cin, nome); //função pra armazenar na variavel ate mesmo espaços em branco sem isso armazenar nomes ficaria estranho
 
         cout << "Matricula: ";
         cin >> mat;
@@ -170,7 +170,7 @@ public:
         cout << "Aluno cadastrado!\n";
     }
 
-    void cadastrarLivro() {
+    void cadastrarLivro() { 
         string nome, autor, cod;
         int ano;
 
@@ -197,8 +197,6 @@ public:
 
         cout << "Livro cadastrado!\n";
     }
-
-    // ===================== EMPRESTIMO =====================
 
     void cadastrarEmprestimo() {
         try {
@@ -231,7 +229,6 @@ public:
         }
     }
 
-    // ===================== DEVOLUCAO =====================
 
     void cadastrarDevolucao() {
         int mat;
@@ -267,7 +264,6 @@ public:
         cout << "Emprestimo nao encontrado!\n";
     }
 
-    // ===================== LISTAGENS =====================
 
     void listarAlunos() {
         NoAluno* a = alunos;
@@ -276,7 +272,7 @@ public:
 
         while (a != nullptr) {
             cout << a->aluno->getNome()
-                 << " | " << a->aluno->getMatricula() << endl;
+                 << " | " << a->aluno->getMatricula() << endl; //percorrer cada nó e exibir seu valor, as funções getters são necessarias pois o programa armazena o ponteiro da instância da classe e não o dado em si
             a = a->prox;
         }
     }
@@ -317,7 +313,7 @@ public:
         }
     }
 
-    // ===================== MENUS =====================
+    // funções pra gerar o menu
 
     void menuBibliotecaria() {
         int op;
@@ -364,7 +360,7 @@ public:
         } while (op != 0);
     }
 
-    // ===================== DESTRUTOR =====================
+    // Destrutores das classes pra não ficar com dados perdidos na heap após a execução
 
     ~Sistema() {
         NoAluno* a;
@@ -392,7 +388,7 @@ public:
     }
 };
 
-// ===================== MAIN =====================
+// função main
 
 int main() {
     Sistema s;
